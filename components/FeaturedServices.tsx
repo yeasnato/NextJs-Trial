@@ -2,86 +2,115 @@
 
 import React from 'react';
 import { useRouter } from 'next/navigation';
-import { Snowflake, Thermometer, Waves, Zap, Flame, Fan, ChevronRight } from 'lucide-react';
-import { useBooking } from '@/contexts/BookingContext';
+import Image from 'next/image';
 
-const FEATURED_SERVICES = [
-  { id: 'ac',        title: 'AC Service',        subtitle: 'Repair, Gas & Install', icon: Snowflake,   from: 399,  color: 'from-sky-500 to-cyan-400',      light: 'bg-sky-50',   ring: 'ring-sky-200'   },
-  { id: 'fridge',    title: 'Refrigerator',       subtitle: 'Repair & Servicing',   icon: Thermometer, from: 350,  color: 'from-blue-500 to-indigo-400',    light: 'bg-blue-50',  ring: 'ring-blue-200'  },
-  { id: 'washing',   title: 'Washing Machine',    subtitle: 'Repair & Full Service', icon: Waves,       from: 450,  color: 'from-teal-500 to-emerald-400',   light: 'bg-teal-50',  ring: 'ring-teal-200'  },
-  { id: 'microwave', title: 'Microwave Oven',     subtitle: 'All Types & Brands',    icon: Zap,         from: 350,  color: 'from-violet-500 to-purple-400',  light: 'bg-violet-50',ring: 'ring-violet-200'},
-  { id: 'geyser',    title: 'Geyser',             subtitle: 'Install & Repair',      icon: Flame,       from: 350,  color: 'from-orange-500 to-amber-400',   light: 'bg-orange-50',ring: 'ring-orange-200'},
-  { id: 'hood',      title: 'Kitchen Hood',       subtitle: 'Deep Clean & Repair',   icon: Fan,         from: 350,  color: 'from-rose-500 to-pink-400',      light: 'bg-rose-50',  ring: 'ring-rose-200'  },
+const SERVICES = [
+  {
+    id: 'ac',
+    title: 'AC Service',
+    subtitle: 'Installation & Repair',
+    image: 'https://ik.imagekit.io/v4mlqlybs/Image/AC.png?updatedAt=1771331451317',
+    alt: 'AC repair service Dhaka - Split AC and Window AC installation, servicing, gas refill by Lucky Services Centre',
+    targetCategory: 'ac',
+  },
+  {
+    id: 'fridge',
+    title: 'Refrigerator',
+    subtitle: 'Service & Repair',
+    image: 'https://ik.imagekit.io/v4mlqlybs/IMG_0515-removebg-preview.jpg',
+    alt: 'Refrigerator repair Dhaka - Fridge gas refill, cooling problem fix, all brands servicing',
+    targetCategory: 'fridge',
+  },
+  {
+    id: 'washing',
+    title: 'Washing Machine',
+    subtitle: 'Full Service',
+    image: 'https://ik.imagekit.io/v4mlqlybs/IMG_0516-removebg-preview.jpg',
+    alt: 'Washing machine repair Dhaka - Front load and top load washing machine servicing at home',
+    targetCategory: 'washing',
+  },
+  {
+    id: 'microwave',
+    title: 'Microwave Oven',
+    subtitle: 'Repair & Parts',
+    image: 'https://ik.imagekit.io/v4mlqlybs/IMG_0517-removebg-preview.jpg',
+    alt: 'Microwave oven repair Dhaka - Convection, grill, solo microwave repair service',
+    targetCategory: 'microwave',
+  },
+  {
+    id: 'geyser',
+    title: 'Geyser',
+    subtitle: 'Install & Fix',
+    image: 'https://ik.imagekit.io/v4mlqlybs/Image/Gyser.jpg?updatedAt=1771331477846',
+    alt: 'Geyser repair Dhaka - Gas geyser and electric water heater installation and repair service',
+    targetCategory: 'geyser',
+  },
+  {
+    id: 'hood',
+    title: 'Kitchen Hood',
+    subtitle: 'Deep Cleaning',
+    image: 'https://ik.imagekit.io/v4mlqlybs/Image/Kitchen%20hood.png?updatedAt=1771331342113',
+    alt: 'Kitchen hood repair Dhaka - Chimney cleaning, motor repair, exhaust fan servicing',
+    targetCategory: 'hood',
+  },
 ];
 
 export const FeaturedServices: React.FC = () => {
   const router = useRouter();
-  const { openBooking } = useBooking();
 
   return (
-    <section id="services-section" className="py-16 md:py-24 bg-[#FAFAFA]">
-      <div className="max-w-7xl mx-auto px-4 md:px-8">
+    <section id="services-section" className="w-full scroll-mt-28">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
+        {SERVICES.map((service, idx) => (
+          <div
+            key={service.id}
+            className={`
+              flex flex-col items-center justify-center text-center
+              py-12 px-6
+              border-b border-white/10
+              ${idx % 2 === 0 ? 'bg-[#67C3EA]' : 'bg-[#5BBCE5]'}
+            `}
+          >
+            {/* Image Container */}
+            <div className="
+              bg-white rounded-[2rem] shadow-xl shadow-black/5
+              w-64 h-64
+              flex items-center justify-center p-6 mb-8
+              transition-transform duration-300 hover:scale-105
+            ">
+              <Image
+                src={service.image}
+                alt={service.alt}
+                width={220}
+                height={220}
+                className="w-full h-full object-contain drop-shadow-sm"
+                loading="lazy"
+              />
+            </div>
 
-        {/* Section Header */}
-        <div className="text-center mb-12 md:mb-16">
-          <span className="inline-block px-4 py-1.5 bg-[#F0F9FC] text-[#2EA9D6] text-xs font-bold uppercase tracking-[0.2em] rounded-full mb-4 border border-[#2EA9D6]/20">
-            Our Services
-          </span>
-          <h2 className="text-3xl md:text-4xl lg:text-5xl font-extrabold text-[#0B2A4A] mb-4 tracking-tight leading-tight">
-            Expert Repair for Every<br className="hidden md:block" /> Home Appliance
-          </h2>
-          <p className="text-gray-500 text-base md:text-lg max-w-xl mx-auto leading-relaxed">
-            Certified technicians. Genuine parts. 45-day warranty. All Dhaka.
-          </p>
-        </div>
+            {/* Title */}
+            <h3 className="text-2xl font-extrabold text-[#0B2A4A] mb-2 tracking-tight">
+              {service.title}
+            </h3>
 
-        {/* Services Grid */}
-        <div className="grid grid-cols-2 md:grid-cols-3 gap-4 md:gap-6">
-          {FEATURED_SERVICES.map((service) => {
-            const Icon = service.icon;
-            return (
-              <div key={service.id}
-                className={`group relative bg-white rounded-2xl md:rounded-3xl p-5 md:p-6 border border-gray-100 shadow-sm hover:shadow-xl transition-all duration-300 cursor-pointer overflow-hidden hover:-translate-y-1 ring-0 hover:${service.ring}`}
-                onClick={() => router.push(`/services/${service.id}`)}>
+            {/* Subtitle */}
+            <p className="text-[#0B2A4A]/80 font-bold text-sm uppercase tracking-widest mb-8">
+              {service.subtitle}
+            </p>
 
-                {/* Background gradient on hover */}
-                <div className={`absolute inset-0 bg-gradient-to-br ${service.color} opacity-0 group-hover:opacity-5 transition-opacity duration-300`} />
-
-                {/* Icon */}
-                <div className={`w-12 h-12 md:w-14 md:h-14 ${service.light} rounded-xl md:rounded-2xl flex items-center justify-center mb-4 group-hover:scale-110 transition-transform duration-300`}>
-                  <Icon className="text-[#2EA9D6]" size={24} />
-                </div>
-
-                {/* Text */}
-                <h3 className="font-extrabold text-[#0B2A4A] text-sm md:text-base leading-tight mb-1 group-hover:text-[#2EA9D6] transition-colors">
-                  {service.title}
-                </h3>
-                <p className="text-gray-400 text-xs md:text-sm mb-3 font-medium">{service.subtitle}</p>
-                <p className="text-[#2EA9D6] font-extrabold text-sm md:text-base">From ৳{service.from}</p>
-
-                {/* Book Now button */}
-                <div className="mt-4 pt-4 border-t border-gray-50 flex items-center justify-between">
-                  <button
-                    onClick={(e) => { e.stopPropagation(); openBooking(); }}
-                    className="text-xs font-bold text-white bg-[#0B2A4A] group-hover:bg-[#2EA9D6] transition-colors px-4 py-2 rounded-xl shadow-sm active:scale-95">
-                    Book Now
-                  </button>
-                  <ChevronRight size={16} className="text-gray-300 group-hover:text-[#2EA9D6] group-hover:translate-x-1 transition-all" />
-                </div>
-              </div>
-            );
-          })}
-        </div>
-
-        {/* View All CTA */}
-        <div className="mt-12 text-center">
-          <button
-            onClick={() => router.push('/services/ac')}
-            className="inline-flex items-center gap-2 bg-[#0B2A4A] hover:bg-[#154675] text-white px-8 py-4 rounded-xl font-bold shadow-lg shadow-gray-200 transition-all transform hover:-translate-y-0.5 active:translate-y-0">
-            View All Services
-            <ChevronRight size={18} />
-          </button>
-        </div>
+            <button
+              onClick={() => router.push(`/services/${service.targetCategory}`)}
+              className="
+                bg-[#0B2A4A] text-white font-bold rounded-xl shadow-lg shadow-blue-900/20
+                hover:shadow-xl hover:bg-[#154675] transition-all transform hover:-translate-y-1 active:translate-y-0
+                px-10 py-3.5 text-sm uppercase tracking-wide
+              "
+              aria-label={`Book ${service.title} service`}
+            >
+              Book Now
+            </button>
+          </div>
+        ))}
       </div>
     </section>
   );
